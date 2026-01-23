@@ -25,7 +25,7 @@ const Navbar = () => {
         </a>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-          {['Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+          {['Skills', 'About', 'Experience', 'Projects', 'Contact'].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop, Briefcase, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop, Briefcase, Calendar, MapPin, ExternalLink, Target, Zap, Eye, Quote } from 'lucide-react';
+import profileImg from '../assets/profile.png';
+import aboutImg from '../assets/about-me.png';
 
 const sectionStyle = {
     padding: '100px 0',
@@ -18,7 +20,7 @@ const Hero = () => {
             minHeight: '100vh',
             position: 'relative',
             overflow: 'hidden',
-            paddingTop: '0',
+            paddingTop: '80px',
             display: 'flex',
             alignItems: 'center'
         }}>
@@ -35,11 +37,19 @@ const Hero = () => {
                 zIndex: -1
             }} />
 
-            <div className="container" style={{ textAlign: 'center', maxWidth: '900px' }}>
+            <div className="container" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '40px',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'center'
+            }}>
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
+                    style={{ flex: '1', minWidth: '320px', textAlign: 'left', paddingLeft: '10%' }}
                 >
                     <span style={{
                         color: 'var(--accent-color)',
@@ -53,22 +63,20 @@ const Hero = () => {
                         Sandesh Pokharkar
                     </span>
                     <h1 style={{
-                        fontSize: '4.5rem',
+                        fontSize: 'max(3rem, 4vw)',
                         fontWeight: '700',
-                        lineHeight: '1.1',
+                        lineHeight: '1.2',
                         marginBottom: '30px'
                     }}>
                         Full Stack Developer & <br />
                         <span className="gradient-text">System Admin</span>
                     </h1>
                     <p style={{
-                        fontSize: '1.2rem',
+                        fontSize: '1.1rem',
                         color: 'var(--text-secondary)',
                         marginBottom: '40px',
                         lineHeight: '1.8',
-                        maxWidth: '700px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
+                        maxWidth: '600px'
                     }}>
                         IT student skilled in development, networking, and system administration.
                         Passionate about building innovative projects and applying technical knowledge in professional environments.
@@ -78,7 +86,7 @@ const Hero = () => {
                         </span>
                     </p>
 
-                    <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                         <motion.a
                             href="#projects"
                             whileHover={{ scale: 1.05 }}
@@ -116,6 +124,56 @@ const Hero = () => {
                         >
                             Contact Me
                         </motion.a>
+                    </div>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    style={{
+                        flex: '1',
+                        maxWidth: '450px',
+                        position: 'relative',
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <div style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
+                        filter: 'blur(60px)',
+                        zIndex: -1,
+                        opacity: 0.3
+                    }} />
+                    <div style={{
+                        width: '100%',
+                        maxWidth: '450px',
+                        height: '600px',
+                        borderRadius: '30px',
+                        overflow: 'hidden',
+                        position: 'relative',
+                        background: 'var(--bg-secondary)',
+                        border: '1px solid var(--border-color)',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <img
+                            src={profileImg}
+                            alt="Sandesh Pokharkar"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                transform: 'scale(1.2)',
+                                transformOrigin: 'center 25%',
+                                filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.5))'
+                            }}
+                        />
                     </div>
                 </motion.div>
             </div>
@@ -169,6 +227,156 @@ const SkillCategory = ({ title, skills, icon: Icon }) => (
     </motion.div>
 );
 
+const About = () => {
+    return (
+        <section id="about" style={{ ...sectionStyle, background: 'var(--bg-primary)', padding: '80px 0' }}>
+            <div className="container" style={{ paddingLeft: '2%', paddingRight: '2%', maxWidth: '1600px' }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    style={{
+                        background: 'white',
+                        borderRadius: '30px',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                        minHeight: '650px'
+                    }}
+                >
+                    {/* Left Column: Image Area */}
+                    <div style={{
+                        flex: '1.2',
+                        minWidth: '400px',
+                        position: 'relative',
+                        background: '#000',
+                        overflow: 'hidden'
+                    }}>
+                        <motion.img
+                            src={aboutImg}
+                            alt="Sandesh Pokharkar"
+                            initial={{ filter: 'grayscale(100%)', opacity: 0.8 }}
+                            whileHover={{ filter: 'grayscale(0%)', opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: 'center 20%',
+                                cursor: 'pointer'
+                            }}
+                        />
+                        <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            width: '100%',
+                            padding: '40px',
+                            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
+                            color: 'white'
+                        }}>
+                            <div style={{ width: '60px', height: '4px', background: 'var(--accent-color)', marginBottom: '15px' }}></div>
+                            <h2 style={{ fontSize: '2.5rem', fontWeight: '700', margin: 0 }}>Sandesh Pokharkar</h2>
+                            <p style={{ fontSize: '1.1rem', opacity: 0.8, marginTop: '5px', textTransform: 'uppercase', letterSpacing: '1px' }}>Full Stack Developer & Sys Admin</p>
+                        </div>
+                    </div>
+
+                    {/* Right Column: Content Area */}
+                    <div style={{
+                        flex: '1',
+                        minWidth: '350px',
+                        padding: '30px 50px',
+                        color: '#1a1a1a',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '15px'
+                    }}>
+                        <div style={{ display: 'flex', gap: '20px' }}>
+                            <Quote size={48} color="rgba(249, 115, 22, 0.2)" />
+                            <h2 style={{ fontSize: '2.4rem', fontWeight: '800', lineHeight: 1.2, color: '#000' }}>
+                                "Perfecting the intersection of <span style={{ color: 'var(--accent-color)' }}>Development</span> and <span style={{ color: 'var(--accent-color)' }}>Infrastructure</span>."
+                            </h2>
+                        </div>
+
+                        <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: '#374151' }}>
+                            Based in Dombivli, Maharashtra, I am an IT student and aspiring professional dedicated to building end-to-end digital solutions.
+                            My journey is driven by a deep-seated interest in how robust software meets high-performance infrastructure.
+                        </p>
+
+                        <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: '#374151' }}>
+                            Currently gaining field experience at **Kryoss Softech**, I specialize in bridging the gap between clean code and
+                            secure systems. From crafting responsive web apps to configuring enterprise-grade networks, I focus on the 'how'
+                            just as much as the 'why'.
+                        </p>
+
+                        {/* My Core Mission Box */}
+                        <div style={{
+                            background: '#f8fafc',
+                            padding: '20px',
+                            borderRadius: '20px',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            border: '1px solid #e2e8f0'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                                <Target size={24} color="var(--accent-color)" />
+                                <h3 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#000' }}>My Core Mission</h3>
+                            </div>
+                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
+                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
+                                    Delivering seamless full-stack applications that prioritize user experience.
+                                </li>
+                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
+                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
+                                    Building reliable, secure, and scalable system architectures from the ground up.
+                                </li>
+                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
+                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
+                                    Leveraging IoT and automation to create smarter, more efficient hardware systems.
+                                </li>
+                            </ul>
+                            {/* Decorative Circles */}
+                            <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', width: '100px', height: '100px', border: '2px solid rgba(249, 115, 22, 0.05)', borderRadius: '50%' }}></div>
+                        </div>
+
+                        {/* Two Sub-sections */}
+                        <div style={{ display: 'flex', gap: '40px', marginTop: '10px' }}>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                                    <Zap size={20} color="var(--accent-color)" />
+                                    <h4 style={{ fontWeight: '700', color: '#000', fontSize: '1.2rem' }}>Full-Stack Mastery</h4>
+                                </div>
+                                <p style={{ fontSize: '1.05rem', color: '#374151', lineHeight: 1.6 }}>
+                                    I craft robust frontends and backends that ensure fluid performance and intuitive interactivity.
+                                </p>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                                    <Terminal size={20} color="var(--accent-color)" />
+                                    <h4 style={{ fontWeight: '700', color: '#000', fontSize: '1.2rem' }}>System Reliability</h4>
+                                </div>
+                                <p style={{ fontSize: '1.05rem', color: '#374151', lineHeight: 1.6 }}>
+                                    I optimize server environments and networking setups to ensure 99.9% uptime and security.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: 'auto', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
+                            <p style={{ fontStyle: 'italic', color: '#111', fontSize: '1.3rem', lineHeight: 1.6, fontWeight: '500' }}>
+                                "I don't just write code; I architect the technical foundations that allow digital innovation to flourish."
+                            </p>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+        </section>
+    );
+};
+
 const Skills = () => {
     const categories = [
         {
@@ -217,7 +425,7 @@ const Skills = () => {
     );
 };
 
-const ExperienceCard = ({ role, duration, type, details, isLeft }) => (
+const ExperienceCard = ({ role, duration, type, details, isLeft, link }) => (
     <div style={{
         display: 'flex',
         marginBottom: '40px',
@@ -228,7 +436,7 @@ const ExperienceCard = ({ role, duration, type, details, isLeft }) => (
             whileHover={{ scale: 1.02 }}
             style={{
                 width: '100%',
-                maxWidth: '800px', // Full width for list feel or strictly centered? Let's do wide cards centered.
+                maxWidth: '800px',
                 margin: '0 auto',
                 background: 'var(--bg-secondary)',
                 padding: '30px',
@@ -239,7 +447,14 @@ const ExperienceCard = ({ role, duration, type, details, isLeft }) => (
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '15px' }}>
                 <div>
-                    <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)' }}>{role}</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)' }}>{role}</h3>
+                        {link && (
+                            <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)' }}>
+                                <ExternalLink size={18} />
+                            </a>
+                        )}
+                    </div>
                     <span style={{ fontSize: '1rem', color: 'var(--accent-color)', fontWeight: '500' }}>{type}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
@@ -264,13 +479,27 @@ const Experience = () => {
 
                 <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                     <ExperienceCard
-                        role="Web Developer Intern"
-                        type="Internship"
-                        duration="4 Months"
+                        role="Software Developer Intern"
+                        type="Kryoss Softech Pvt Ltd"
+                        duration="Ongoing (3 Months)"
+                        link="https://kryosssoftech.org/"
                         details={[
-                            "Completed intensive 4-month internship focusing on full-stack web development.",
-                            "Gained practical experience in designing and deploying web applications.",
-                            "Collaborated with senior developers to implement responding UI components."
+                            "Kryoss Softech is a leading Web and Mobile App Development company that transforms ideas into scalable digital reality.",
+                            "Gaining hands-on experience in building high-performance iOS and Android applications tailoring to business growth.",
+                            "Focusing on delivering clean architecture, robust networking, and user-focused solutions across custom software and CRM/CMS platforms.",
+                            "Collaborating with senior engineers to implement advanced features and ensuring seamless product execution."
+                        ]}
+                    />
+                    <ExperienceCard
+                        role="Web Developer Intern"
+                        type="The Skill Guru"
+                        duration="4 Months (Completed)"
+                        link="https://theskillguru.org/"
+                        details={[
+                            "The Skill Guru is a dynamic platform providing comprehensive learning resources and skill development programs for students and professionals.",
+                            "Completed an intensive 4-month internship focusing on full-stack web development and responsive UI design.",
+                            "Gained practical experience in designing and deploying web applications using modern frameworks.",
+                            "Collaborated effectively with senior developers to implement high-performance and interactive UI components."
                         ]}
                     />
                     <ExperienceCard
@@ -288,6 +517,7 @@ const Experience = () => {
                         type=""
                         duration="Ongoing"
                         details={[
+                            "Developed Universal Studio, a versatile digital suite for document management and media editing.",
                             "Built a complete IoT Smart Attendance System integrating hardware and mobile software.",
                             "Proficient in system administration tasks including DHCP, DNS, and Linux security.",
                             "Developed robust networking setups involving Routing and LAN configurations."
@@ -338,6 +568,12 @@ const ProjectCard = ({ title, desc, link, tags }) => (
 
 const Projects = () => {
     const projects = [
+        {
+            title: "Universal Studio",
+            desc: "A comprehensive Digital Creative Suite featuring PDF management tools, advanced Photo and Video editors, and AI-powered media enhancement capabilities.",
+            tags: ["React", "AI Enhancement", "PDF Tools", "Media Editing"],
+            link: "https://universal-studio-nine.vercel.app/"
+        },
         {
             title: "Smart Attendance System",
             desc: "An innovative IoT-based solution integrating mobile applications with hardware sensors to automate attendance tracking efficiently.",
@@ -421,6 +657,7 @@ const Home = () => {
         <div>
             <Hero />
             <Skills />
+            <About />
             <Experience />
             <Projects />
             <Contact />

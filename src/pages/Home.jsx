@@ -338,6 +338,10 @@ const About = () => {
                                     <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
                                     Leveraging IoT and automation to create smarter, more efficient hardware systems.
                                 </li>
+                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
+                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
+                                    Developing comprehensive projects from scratch, handling everything from concept to delivery.
+                                </li>
                             </ul>
                             {/* Decorative Circles */}
                             <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', width: '100px', height: '100px', border: '2px solid rgba(249, 115, 22, 0.05)', borderRadius: '50%' }}></div>

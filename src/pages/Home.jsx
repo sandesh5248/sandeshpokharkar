@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop, 
-  Briefcase, Calendar, MapPin, ExternalLink, Target, Zap, 
+import {
+  ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop,
+  Briefcase, Calendar, MapPin, ExternalLink, Target, Zap,
   Mail, Phone, Award, GraduationCap, ChevronRight, CheckCircle2,
   Database, ShieldCheck, Heart, User, ChevronDown
 } from 'lucide-react';
@@ -66,7 +66,7 @@ const TiltCard = ({ children, style = {}, className = "" }) => {
       }}
     >
       {/* Dynamic Glow Spotlight */}
-      <div 
+      <div
         style={{
           position: 'absolute',
           top: 0,
@@ -95,7 +95,7 @@ const Hero = () => {
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
   return (
-    <section 
+    <section
       ref={containerRef}
       style={{
         minHeight: '100vh',
@@ -108,7 +108,7 @@ const Hero = () => {
       }}
     >
       <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', justifyContent: 'center', zIndex: 2, margin: '0 auto', maxWidth: '800px' }}>
-        
+
         {/* Info */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -193,28 +193,6 @@ const Hero = () => {
         </motion.div>
 
       </div>
-
-      {/* Down Arrow */}
-      <div style={{
-        position: 'absolute',
-        bottom: '30px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 5,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '8px',
-        opacity: 0.6
-      }}>
-        <span style={{ fontSize: '0.75rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Scroll Down</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ChevronDown size={18} />
-        </motion.div>
-      </div>
     </section>
   );
 };
@@ -265,7 +243,7 @@ const About = () => {
   return (
     <section id="about" style={{ padding: '100px 0', background: 'var(--bg-secondary)' }}>
       <div className="container">
-        
+
         {/* Title */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
@@ -278,10 +256,10 @@ const About = () => {
 
         {/* Content Box */}
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          
+
           {/* Tabbed Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%', maxWidth: '800px' }}>
-            
+
             {/* Tabs */}
             <div style={{
               display: 'flex',
@@ -314,7 +292,7 @@ const About = () => {
 
             {/* Tab content wrapper */}
             <div style={{ minHeight: '280px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              
+
               {/* Tab: Summary */}
               {activeTab === 'summary' && (
                 <motion.div
@@ -327,7 +305,7 @@ const About = () => {
                   <p style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                     Motivated Full Stack Developer and B.Sc. IT student with hands-on experience in designing, developing, and deploying responsive web applications. Skilled in frontend-backend integration, REST APIs, and database management. Passionate about clean code architecture, scalable development, and performance optimization.
                   </p>
-                  
+
                   {/* Highlights checklist */}
                   <div style={{ display: 'grid', gap: '12px' }}>
                     {profileHighlights.map((highlight, index) => (
@@ -370,9 +348,7 @@ const About = () => {
                             fontWeight: '700'
                           }}>{item.score}</span>
                         </div>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                          {item.institution} &bull; <span style={{ color: 'var(--accent-color)' }}>{item.status}</span>
-                        </p>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>yes {item.institution} &bull; <span style={{ color: 'var(--accent-color)' }}>{item.status}</span></p>
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', opacity: 0.8 }}>{item.details}</p>
                       </div>
                     ))}
@@ -392,7 +368,7 @@ const About = () => {
                   <p style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
                     Beyond writeups and repositories, I focus on project management, team synergy, and modern software development cycles.
                   </p>
-                  
+
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
                     {softSkills.map((skill, index) => (
                       <div key={index} style={{
@@ -460,7 +436,7 @@ const Skills = () => {
   return (
     <section id="skills" style={{ padding: '100px 0' }}>
       <div className="container">
-        
+
         {/* Title */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
@@ -495,7 +471,7 @@ const Skills = () => {
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {cat.skills.map((skill, sIdx) => (
-                    <span 
+                    <span
                       key={sIdx}
                       style={{
                         background: 'rgba(255, 255, 255, 0.03)',
@@ -553,7 +529,7 @@ const Experience = () => {
   return (
     <section id="experience" style={{ padding: '100px 0', background: 'var(--bg-secondary)', position: 'relative' }}>
       <div className="container">
-        
+
         {/* Title */}
         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
@@ -566,7 +542,7 @@ const Experience = () => {
 
         {/* Timeline Layout */}
         <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
-          
+
           {/* Vertical central line */}
           <div style={{
             position: 'absolute',
@@ -677,7 +653,7 @@ const Projects = () => {
   return (
     <section id="projects" style={{ padding: '100px 0' }}>
       <div className="container">
-        
+
         {/* Title */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
@@ -692,15 +668,15 @@ const Projects = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
           {projects.map((proj, idx) => (
             <TiltCard key={idx} style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '32px' }}>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: 'white' }}>{proj.title}</h3>
-                  <motion.a 
+                  <motion.a
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.9 }}
-                    href={proj.link} 
-                    target="_blank" 
+                    href={proj.link}
+                    target="_blank"
                     rel="noopener noreferrer"
                     style={{
                       background: 'rgba(255,255,255,0.04)',
@@ -726,7 +702,7 @@ const Projects = () => {
               {/* Tags */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '24px' }}>
                 {proj.tags.map((tag, tIdx) => (
-                  <span 
+                  <span
                     key={tIdx}
                     style={{
                       fontSize: '0.75rem',
@@ -771,7 +747,7 @@ const Contact = () => {
   return (
     <section id="contact" style={{ padding: '100px 0', background: 'var(--bg-secondary)' }}>
       <div className="container">
-        
+
         {/* Title */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
@@ -783,17 +759,17 @@ const Contact = () => {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'start' }}>
-          
+
           {/* Left: Contact Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-            
+
             <h3 style={{ fontSize: '1.6rem', fontWeight: '800', color: 'white' }}>Let's work together!</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.8' }}>
               I am open to internships, projects, and junior full-stack developer roles. If you have any inquiries, proposals, or just want to connect, feel free to contact me.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
+
               {/* Phone */}
               <a href="tel:+919152600509" style={{ display: 'flex', alignItems: 'center', gap: '16px' }} className="contact-item">
                 <div style={{
@@ -864,20 +840,20 @@ const Contact = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Your Name</label>
-                  <input 
-                    type="text" 
-                    required 
-                    placeholder="John Doe" 
+                  <input
+                    type="text"
+                    required
+                    placeholder="John Doe"
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                   />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Your Email</label>
-                  <input 
-                    type="email" 
-                    required 
-                    placeholder="john@example.com" 
+                  <input
+                    type="email"
+                    required
+                    placeholder="john@example.com"
                     value={formState.email}
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                   />
@@ -886,9 +862,9 @@ const Contact = () => {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Subject</label>
-                <input 
-                  type="text" 
-                  placeholder="Freelance Project / Hiring" 
+                <input
+                  type="text"
+                  placeholder="Freelance Project / Hiring"
                   value={formState.subject}
                   onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                 />
@@ -896,10 +872,10 @@ const Contact = () => {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Message</label>
-                <textarea 
-                  rows={4} 
-                  required 
-                  placeholder="Let's build something amazing together..." 
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Let's build something amazing together..."
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 />
@@ -978,16 +954,17 @@ const Contact = () => {
         </div>
 
         {/* Footer info */}
-        <div style={{ marginTop: '80px', borderTop: '1px solid var(--border-color)', paddingTop: '30px', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-
+        <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '10px', textAlign: 'center' }}>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+            © 2026 Sandesh Pokharkar. All rights reserved.
           </p>
         </div>
 
       </div>
-      
+
       {/* Visual touch-up styles for contact link transitions */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .contact-item:hover p:last-child {
           color: var(--accent-color) !important;
           transition: color 0.3s ease;

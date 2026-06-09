@@ -1,672 +1,1014 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop, Briefcase, Calendar, MapPin, ExternalLink, Target, Zap, Eye, Quote } from 'lucide-react';
-import profileImg from '../assets/profile.png';
-import aboutImg from '../assets/about-me.png';
+import React, { useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { 
+  ArrowRight, Code, Terminal, Network, Cpu, Brain, Laptop, 
+  Briefcase, Calendar, MapPin, ExternalLink, Target, Zap, 
+  Mail, Phone, Award, GraduationCap, ChevronRight, CheckCircle2,
+  Database, ShieldCheck, Heart, User, ChevronDown
+} from 'lucide-react';
 
-const sectionStyle = {
-    padding: '100px 0',
-    minHeight: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    scrollMarginTop: '80px'
+// 3D Tilt Card Component
+const TiltCard = ({ children, style = {}, className = "" }) => {
+  const cardRef = useRef(null);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glowX, setGlowX] = useState(0);
+  const [glowY, setGlowY] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+
+    // Smooth tilt angles
+    const rX = -(mouseY / (height / 2)) * 10;
+    const rY = (mouseX / (width / 2)) * 10;
+    setRotateX(rX);
+    setRotateY(rY);
+
+    // Glow position
+    setGlowX(e.clientX - rect.left);
+    setGlowY(e.clientY - rect.top);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      animate={{
+        rotateX: rotateX,
+        rotateY: rotateY,
+        transformPerspective: 1000
+      }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className={`glass-panel ${className}`}
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        ...style
+      }}
+    >
+      {/* Dynamic Glow Spotlight */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `radial-gradient(350px circle at ${glowX}px ${glowY}px, rgba(249, 115, 22, 0.12), transparent 80%)`,
+          borderRadius: 'inherit',
+          pointerEvents: 'none',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.5s ease',
+          zIndex: 1
+        }}
+      />
+      <div style={{ position: 'relative', zIndex: 2, height: '100%' }}>
+        {children}
+      </div>
+    </motion.div>
+  );
 };
 
+// Hero Section
 const Hero = () => {
-    return (
-        <section style={{
-            ...sectionStyle,
-            minHeight: '100vh',
-            position: 'relative',
-            overflow: 'hidden',
-            paddingTop: '80px',
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-            {/* Background Gradient */}
-            <div style={{
-                position: 'absolute',
-                top: '-20%',
-                right: '-10%',
-                width: '600px',
-                height: '600px',
-                background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
-                filter: 'blur(80px)',
-                opacity: 0.6,
-                zIndex: -1
-            }} />
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
-            <div className="container" style={{
+  return (
+    <section 
+      ref={containerRef}
+      style={{
+        minHeight: '100vh',
+        position: 'relative',
+        overflow: 'hidden',
+        paddingTop: '120px',
+        display: 'flex',
+        alignItems: 'center',
+        background: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 60%), radial-gradient(circle at 10% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%)'
+      }}
+    >
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', justifyContent: 'center', zIndex: 2, margin: '0 auto', maxWidth: '800px' }}>
+        
+        {/* Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}
+        >
+          <h1 style={{
+            fontSize: 'max(3.5rem, 5vw)',
+            fontWeight: '800',
+            lineHeight: '1.1',
+            letterSpacing: '-1.5px',
+            fontFamily: 'var(--font-accent)'
+          }}>
+            SANDESH <br />
+            <span className="gradient-text">POKHARKAR</span>
+          </h1>
+
+          <h2 style={{
+            fontSize: 'max(1.8rem, 2.5vw)',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            opacity: 0.95
+          }}>
+            Full Stack Developer
+          </h2>
+
+          <p style={{
+            fontSize: '1.15rem',
+            color: 'var(--text-secondary)',
+            lineHeight: '1.8',
+            maxWidth: '600px'
+          }}>
+            I am a highly motivated developer and B.Sc. IT student with a strong passion for designing, coding, and optimizing end-to-end web architectures.
+          </p>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-secondary)' }}>
+            <MapPin size={18} color="var(--accent-color)" />
+            <span style={{ fontSize: '0.95rem', fontWeight: '500' }}>Dombivli West, Maharashtra, India</span>
+          </div>
+
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '16px', justifyContent: 'center' }}>
+            <motion.a
+              href="#projects"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                background: 'linear-gradient(135deg, var(--accent-color) 0%, #ea580c 100%)',
+                color: 'white',
+                padding: '16px 32px',
+                borderRadius: '16px',
+                fontSize: '0.95rem',
+                fontWeight: '700',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '40px',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'center'
-            }}>
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    style={{ flex: '1', minWidth: '320px', textAlign: 'left', paddingLeft: '10%' }}
-                >
-                    <span style={{
-                        color: 'var(--accent-color)',
-                        fontWeight: '600',
-                        letterSpacing: '2px',
-                        textTransform: 'uppercase',
-                        fontSize: '1rem',
-                        marginBottom: '20px',
-                        display: 'block'
-                    }}>
-                        Sandesh Pokharkar
-                    </span>
-                    <h1 style={{
-                        fontSize: 'max(3rem, 4vw)',
-                        fontWeight: '700',
-                        lineHeight: '1.2',
-                        marginBottom: '30px'
-                    }}>
-                        Full Stack Developer & <br />
-                        <span className="gradient-text">System Admin</span>
-                    </h1>
-                    <p style={{
-                        fontSize: '1.1rem',
-                        color: 'var(--text-secondary)',
-                        marginBottom: '40px',
-                        lineHeight: '1.8',
-                        maxWidth: '600px'
-                    }}>
-                        IT student skilled in development, networking, and system administration.
-                        Passionate about building innovative projects and applying technical knowledge in professional environments.
-                        <br />
-                        <span style={{ fontSize: '1rem', marginTop: '10px', display: 'block', opacity: 0.8 }}>
-                            <MapPin size={16} style={{ display: 'inline', marginRight: '5px' }} /> Dombivli West, India
-                        </span>
-                    </p>
+                gap: '8px',
+                boxShadow: '0 10px 20px -10px rgba(249, 115, 22, 0.4)'
+              }}
+            >
+              Explore Projects <ArrowRight size={18} />
+            </motion.a>
+            <motion.a
+              href="#contact"
+              whileHover={{ scale: 1.03, borderColor: 'var(--text-primary)' }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                color: 'white',
+                padding: '16px 32px',
+                borderRadius: '16px',
+                fontSize: '0.95rem',
+                fontWeight: '700',
+                border: '1px solid var(--border-color)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              Contact Details
+            </motion.a>
+          </div>
+        </motion.div>
 
-                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                        <motion.a
-                            href="#projects"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                background: 'var(--accent-color)',
-                                color: 'white',
-                                padding: '16px 32px',
-                                borderRadius: '50px',
-                                fontSize: '1rem',
-                                fontWeight: '600',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                boxShadow: '0 10px 25px -10px var(--accent-glow)',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            View Work <ArrowRight size={18} />
-                        </motion.a>
-                        <motion.a
-                            href="#contact"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                background: 'transparent',
-                                color: 'white',
-                                padding: '16px 32px',
-                                borderRadius: '50px',
-                                fontSize: '1rem',
-                                fontWeight: '600',
-                                border: '1px solid var(--border-color)',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Contact Me
-                        </motion.a>
-                    </div>
-                </motion.div>
+      </div>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8 }}
-                    style={{
-                        flex: '1',
-                        maxWidth: '450px',
-                        position: 'relative',
-                        display: 'flex',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <div style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
-                        filter: 'blur(60px)',
-                        zIndex: -1,
-                        opacity: 0.3
-                    }} />
-                    <div style={{
-                        width: '100%',
-                        maxWidth: '450px',
-                        height: '600px',
-                        borderRadius: '30px',
-                        overflow: 'hidden',
-                        position: 'relative',
-                        background: 'var(--bg-secondary)',
-                        border: '1px solid var(--border-color)',
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <img
-                            src={profileImg}
-                            alt="Sandesh Pokharkar"
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                transform: 'scale(1.2)',
-                                transformOrigin: 'center 25%',
-                                filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.5))'
-                            }}
-                        />
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
+      {/* Down Arrow */}
+      <div style={{
+        position: 'absolute',
+        bottom: '30px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px',
+        opacity: 0.6
+      }}>
+        <span style={{ fontSize: '0.75rem', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: '600' }}>Scroll Down</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <ChevronDown size={18} />
+        </motion.div>
+      </div>
+    </section>
+  );
 };
 
-const SkillCategory = ({ title, skills, icon: Icon }) => (
-    <motion.div
-        whileHover={{ y: -5 }}
-        style={{
-            background: 'var(--bg-secondary)',
-            padding: '30px',
-            borderRadius: '20px',
-            border: '1px solid var(--border-color)',
-            height: '100%'
-        }}
-    >
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '15px',
-            marginBottom: '20px',
-            borderBottom: '1px solid rgba(255,255,255,0.05)',
-            paddingBottom: '15px'
-        }}>
-            <div style={{
-                background: 'rgba(59, 130, 246, 0.1)',
-                color: 'var(--accent-color)',
-                padding: '10px',
-                borderRadius: '10px'
-            }}>
-                <Icon size={24} />
-            </div>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '600' }}>{title}</h3>
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-            {skills.map((skill, i) => (
-                <span key={i} style={{
-                    fontSize: '0.9rem',
-                    color: 'var(--text-secondary)',
-                    background: 'rgba(255,255,255,0.03)',
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid rgba(255,255,255,0.05)'
-                }}>
-                    {skill}
-                </span>
-            ))}
-        </div>
-    </motion.div>
-);
-
+// About / Education Section (with interactive tabs)
 const About = () => {
-    return (
-        <section id="about" style={{ ...sectionStyle, background: 'var(--bg-primary)', padding: '80px 0' }}>
-            <div className="container" style={{ paddingLeft: '2%', paddingRight: '2%', maxWidth: '1600px' }}>
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    style={{
-                        background: 'white',
-                        borderRadius: '30px',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                        minHeight: '650px'
-                    }}
-                >
-                    {/* Left Column: Image Area */}
-                    <div style={{
-                        flex: '1.2',
-                        minWidth: '400px',
-                        position: 'relative',
-                        background: '#000',
-                        overflow: 'hidden'
-                    }}>
-                        <motion.img
-                            src={aboutImg}
-                            alt="Sandesh Pokharkar"
-                            initial={{ filter: 'grayscale(100%)', opacity: 0.8 }}
-                            whileHover={{ filter: 'grayscale(0%)', opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'center 20%',
-                                cursor: 'pointer'
-                            }}
-                        />
-                        <div style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            width: '100%',
-                            padding: '40px',
-                            background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
-                            color: 'white'
-                        }}>
-                            <div style={{ width: '60px', height: '4px', background: 'var(--accent-color)', marginBottom: '15px' }}></div>
-                            <h2 style={{ fontSize: '2.5rem', fontWeight: '700', margin: 0 }}>Sandesh Pokharkar</h2>
-                            <p style={{ fontSize: '1.1rem', opacity: 0.8, marginTop: '5px', textTransform: 'uppercase', letterSpacing: '1px' }}>Full Stack Developer & Sys Admin</p>
-                        </div>
-                    </div>
+  const [activeTab, setActiveTab] = useState('summary');
 
-                    {/* Right Column: Content Area */}
-                    <div style={{
-                        flex: '1',
-                        minWidth: '350px',
-                        padding: '30px 50px',
-                        color: '#1a1a1a',
+  const profileHighlights = [
+    "Developed and deployed multiple live web applications on Vercel.",
+    "Completed a professional, hands-on web development internship.",
+    "Strong attention to clean architecture, MVC design patterns, and Git workflows.",
+    "B.Sc. in IT student with an academic record of 8.50 CGPA at Mumbai University."
+  ];
+
+  const education = [
+    {
+      degree: "B.Sc. in Information Technology",
+      institution: "University of Mumbai",
+      status: "Completed / Year 2026",
+      score: "CGPA: 8.50",
+      details: "Focused on Software Engineering, Database Systems, Web Architectures, and Object-Oriented Development."
+    },
+    {
+      degree: "Higher Secondary Certificate (HSC)",
+      institution: "Maharashtra State Board",
+      status: "Completed / Year 2023",
+      score: "76.33%",
+      details: "Specialized in Science streams, including Core Mathematics, Physics, and IT concepts."
+    },
+    {
+      degree: "Secondary School Certificate (SSC)",
+      institution: "Maharashtra State Board",
+      status: "Completed / Year 2021",
+      score: "75.80%",
+      details: "Completed core foundational schooling with a strong academic output."
+    }
+  ];
+
+  const softSkills = [
+    "Problem Solving & Analytical Thinking",
+    "Team Collaboration & Agile Working",
+    "Technical Presentation & Communication",
+    "Task & Project Management",
+    "Leadership & Task Allocation"
+  ];
+
+  return (
+    <section id="about" style={{ padding: '100px 0', background: 'var(--bg-secondary)' }}>
+      <div className="container">
+        
+        {/* Title */}
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
+            About <span className="gradient-text">Me</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>
+            Who I am, my academic track, and my foundational goals
+          </p>
+        </div>
+
+        {/* Content Box */}
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          
+          {/* Tabbed Info */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%', maxWidth: '800px' }}>
+            
+            {/* Tabs */}
+            <div style={{
+              display: 'flex',
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '6px',
+              borderRadius: '16px',
+              border: '1px solid var(--border-color)',
+              gap: '8px'
+            }}>
+              {['summary', 'education', 'skills'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '12px',
+                    fontSize: '0.9rem',
+                    fontWeight: '700',
+                    textTransform: 'capitalize',
+                    background: activeTab === tab ? 'var(--accent-color)' : 'transparent',
+                    color: activeTab === tab ? 'white' : 'var(--text-secondary)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {tab === 'skills' ? 'Soft Skills' : tab}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab content wrapper */}
+            <div style={{ minHeight: '280px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              
+              {/* Tab: Summary */}
+              {activeTab === 'summary' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+                >
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: '700' }}>Professional Journey</h3>
+                  <p style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                    Motivated Full Stack Developer and B.Sc. IT student with hands-on experience in designing, developing, and deploying responsive web applications. Skilled in frontend-backend integration, REST APIs, and database management. Passionate about clean code architecture, scalable development, and performance optimization.
+                  </p>
+                  
+                  {/* Highlights checklist */}
+                  <div style={{ display: 'grid', gap: '12px' }}>
+                    {profileHighlights.map((highlight, index) => (
+                      <div key={index} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                        <CheckCircle2 size={16} color="var(--accent-color)" style={{ marginTop: '4px', flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Tab: Education */}
+              {activeTab === 'education' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+                >
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {education.map((item, index) => (
+                      <div key={index} style={{
+                        background: 'rgba(255,255,255,0.02)',
+                        padding: '16px',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255,255,255,0.04)',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '15px'
-                    }}>
-                        <div style={{ display: 'flex', gap: '20px' }}>
-                            <Quote size={48} color="rgba(249, 115, 22, 0.2)" />
-                            <h2 style={{ fontSize: '2.4rem', fontWeight: '800', lineHeight: 1.2, color: '#000' }}>
-                                "Perfecting the intersection of <span style={{ color: 'var(--accent-color)' }}>Development</span> and <span style={{ color: 'var(--accent-color)' }}>Infrastructure</span>."
-                            </h2>
+                        gap: '6px'
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                          <h4 style={{ fontWeight: '700', fontSize: '1.05rem', color: 'white' }}>{item.degree}</h4>
+                          <span style={{
+                            background: 'rgba(59, 130, 246, 0.1)',
+                            color: 'var(--accent-secondary)',
+                            padding: '2px 8px',
+                            borderRadius: '6px',
+                            fontSize: '0.75rem',
+                            fontWeight: '700'
+                          }}>{item.score}</span>
                         </div>
-
-                        <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: '#374151' }}>
-                            Based in Dombivli, Maharashtra, I am an IT student and aspiring professional dedicated to building end-to-end digital solutions.
-                            My journey is driven by a deep-seated interest in how robust software meets high-performance infrastructure.
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                          {item.institution} &bull; <span style={{ color: 'var(--accent-color)' }}>{item.status}</span>
                         </p>
-
-                        <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: '#374151' }}>
-                            Currently gaining field experience at **Kryoss Softech**, I specialize in bridging the gap between clean code and
-                            secure systems. From crafting responsive web apps to configuring enterprise-grade networks, I focus on the 'how'
-                            just as much as the 'why'.
-                        </p>
-
-                        {/* My Core Mission Box */}
-                        <div style={{
-                            background: '#f8fafc',
-                            padding: '20px',
-                            borderRadius: '20px',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            border: '1px solid #e2e8f0'
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                                <Target size={24} color="var(--accent-color)" />
-                                <h3 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#000' }}>My Core Mission</h3>
-                            </div>
-                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
-                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
-                                    Delivering seamless full-stack applications that prioritize user experience.
-                                </li>
-                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
-                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
-                                    Building reliable, secure, and scalable system architectures from the ground up.
-                                </li>
-                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
-                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
-                                    Leveraging IoT and automation to create smarter, more efficient hardware systems.
-                                </li>
-                                <li style={{ display: 'flex', gap: '12px', alignItems: 'start', color: '#374151', fontSize: '1.1rem' }}>
-                                    <span style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>•</span>
-                                    Developing comprehensive projects from scratch, handling everything from concept to delivery.
-                                </li>
-                            </ul>
-                            {/* Decorative Circles */}
-                            <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', width: '100px', height: '100px', border: '2px solid rgba(249, 115, 22, 0.05)', borderRadius: '50%' }}></div>
-                        </div>
-
-                        {/* Two Sub-sections */}
-                        <div style={{ display: 'flex', gap: '40px', marginTop: '10px' }}>
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                                    <Zap size={20} color="var(--accent-color)" />
-                                    <h4 style={{ fontWeight: '700', color: '#000', fontSize: '1.2rem' }}>Full-Stack Mastery</h4>
-                                </div>
-                                <p style={{ fontSize: '1.05rem', color: '#374151', lineHeight: 1.6 }}>
-                                    I craft robust frontends and backends that ensure fluid performance and intuitive interactivity.
-                                </p>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                                    <Terminal size={20} color="var(--accent-color)" />
-                                    <h4 style={{ fontWeight: '700', color: '#000', fontSize: '1.2rem' }}>System Reliability</h4>
-                                </div>
-                                <p style={{ fontSize: '1.05rem', color: '#374151', lineHeight: 1.6 }}>
-                                    I optimize server environments and networking setups to ensure 99.9% uptime and security.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div style={{ marginTop: 'auto', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
-                            <p style={{ fontStyle: 'italic', color: '#111', fontSize: '1.3rem', lineHeight: 1.6, fontWeight: '500' }}>
-                                "I don't just write code; I architect the technical foundations that allow digital innovation to flourish."
-                            </p>
-                        </div>
-                    </div>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', opacity: 0.8 }}>{item.details}</p>
+                      </div>
+                    ))}
+                  </div>
                 </motion.div>
+              )}
+
+              {/* Tab: Soft Skills */}
+              {activeTab === 'skills' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+                >
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: '700' }}>Collaborative Competence</h3>
+                  <p style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                    Beyond writeups and repositories, I focus on project management, team synergy, and modern software development cycles.
+                  </p>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                    {softSkills.map((skill, index) => (
+                      <div key={index} style={{
+                        background: 'rgba(255,255,255,0.02)',
+                        padding: '12px 16px',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255,255,255,0.04)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px'
+                      }}>
+                        <Award size={16} color="var(--accent-color)" />
+                        <span style={{ fontSize: '0.9rem', color: 'white', fontWeight: '500' }}>{skill}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
             </div>
-        </section>
-    );
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
+// Skills Section (Grid of 3D tilt cards)
 const Skills = () => {
-    const categories = [
-        {
-            title: "Programming / Web",
-            icon: Code,
-            skills: ["HTML", "CSS", "JavaScript", "Bootstrap", "Angular", "MERN Stack", "ASP.NET", "PHP", "MySQL", "MongoDB", "Python", "C", "C++", "Java"]
-        },
-        {
-            title: "System Admin",
-            icon: Terminal,
-            skills: ["User/Group Mgmt", "Permissions & ACLs", "LVM", "File Systems", "RPM/YUM", "SSH", "Cron", "rsyslog", "iptables", "SSL/GPG", "GRUB"]
-        },
-        {
-            title: "Networking",
-            icon: Network,
-            skills: ["DHCP", "DNS (BIND)", "Routing (Static/RIP)", "LAN Setup", "FTP", "NFS", "Samba", "VMware Networking"]
-        },
-        {
-            title: "IoT & Embedded",
-            icon: Cpu,
-            skills: ["Arduino", "ESP32", "Raspberry Pi", "Sensors", "Motors", "IoT-App Integration"]
-        },
-        {
-            title: "Artificial Intelligence",
-            icon: Brain,
-            skills: ["Search Algorithms (BFS, DFS, A*)", "Prolog", "ML Basics", "Generative AI"]
-        },
-        {
-            title: "Tools",
-            icon: Laptop,
-            skills: ["GitHub", "VS Code", "Visual Studio", "Android Studio", "VMware", "Linux Terminal", "Canva"]
-        }
-    ];
+  const skillCategories = [
+    {
+      title: "Frontend Development",
+      icon: Laptop,
+      skills: ["React.js", "Angular", "JavaScript", "HTML5", "CSS3", "Bootstrap", "Tailwind CSS", "Responsive Web Design"]
+    },
+    {
+      title: "Backend Development",
+      icon: Terminal,
+      skills: ["Node.js", "Express.js", "PHP", "ASP.NET", "RESTful API Dev", "Auth & Token Systems"]
+    },
+    {
+      title: "Databases & Storage",
+      icon: Database,
+      skills: ["MongoDB", "MySQL", "SQL Server"]
+    },
+    {
+      title: "Programming Languages",
+      icon: Code,
+      skills: ["C#", "JavaScript", "Python", "PHP", "C", "C++"]
+    },
+    {
+      title: "Tools & Cloud Platforms",
+      icon: Cpu,
+      skills: ["Git", "GitHub", "Vercel", "Netlify", "WordPress", "Antigravity IDE", "VS Code", "Cursor AI", "cPanel"]
+    },
+    {
+      title: "Methodologies & Specialities",
+      icon: Brain,
+      skills: ["MERN Stack", "MVC Architecture", "OOP / Data Structures", "API Integration", "UI/UX & Speed Optimizations"]
+    }
+  ];
 
-    return (
-        <section id="skills" style={{ ...sectionStyle }}>
-            <div className="container">
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '50px', textAlign: 'center' }}>Technical <span className="gradient-text">Proficiency</span></h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '30px' }}>
-                    {categories.map((cat, i) => (
-                        <SkillCategory key={i} {...cat} />
-                    ))}
+  return (
+    <section id="skills" style={{ padding: '100px 0' }}>
+      <div className="container">
+        
+        {/* Title */}
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
+            Technical <span className="gradient-text">Skills</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>
+            My full-stack toolkit and developer specifications
+          </p>
+        </div>
+
+        {/* Grid of Categories */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '30px' }}>
+          {skillCategories.map((cat, idx) => {
+            const Icon = cat.icon;
+            return (
+              <TiltCard key={idx} style={{ padding: '32px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                  <div style={{
+                    background: 'rgba(249, 115, 22, 0.1)',
+                    color: 'var(--accent-color)',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Icon size={24} />
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'white' }}>{cat.title}</h3>
                 </div>
-            </div>
-        </section>
-    );
-};
 
-const ExperienceCard = ({ role, duration, type, details, isLeft, link }) => (
-    <div style={{
-        display: 'flex',
-        marginBottom: '40px',
-        justifyContent: isLeft ? 'flex-start' : 'flex-end',
-        position: 'relative'
-    }}>
-        <motion.div
-            whileHover={{ scale: 1.02 }}
-            style={{
-                width: '100%',
-                maxWidth: '800px',
-                margin: '0 auto',
-                background: 'var(--bg-secondary)',
-                padding: '30px',
-                borderRadius: '16px',
-                border: '1px solid var(--border-color)',
-                position: 'relative'
-            }}
-        >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '15px' }}>
-                <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)' }}>{role}</h3>
-                        {link && (
-                            <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)' }}>
-                                <ExternalLink size={18} />
-                            </a>
-                        )}
-                    </div>
-                    <span style={{ fontSize: '1rem', color: 'var(--accent-color)', fontWeight: '500' }}>{type}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-                    <Calendar size={16} />
-                    <span>{duration}</span>
-                </div>
-            </div>
-            <ul style={{ paddingLeft: '20px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                {details.map((point, i) => (
-                    <li key={i}>{point}</li>
-                ))}
-            </ul>
-        </motion.div>
-    </div>
-);
-
-const Experience = () => {
-    return (
-        <section id="experience" style={{ ...sectionStyle, background: 'var(--bg-secondary)' }}>
-            <div className="container">
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '60px', textAlign: 'center' }}>Experience & <span className="gradient-text">Achievements</span></h2>
-
-                <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-                    <ExperienceCard
-                        role="Software Developer Intern"
-                        type="Kryoss Softech Pvt Ltd"
-                        duration="Ongoing (3 Months)"
-                        link="https://kryosssoftech.org/"
-                        details={[
-                            "Kryoss Softech is a leading Web and Mobile App Development company that transforms ideas into scalable digital reality.",
-                            "Gaining hands-on experience in building high-performance iOS and Android applications tailoring to business growth.",
-                            "Focusing on delivering clean architecture, robust networking, and user-focused solutions across custom software and CRM/CMS platforms.",
-                            "Collaborating with senior engineers to implement advanced features and ensuring seamless product execution."
-                        ]}
-                    />
-                    <ExperienceCard
-                        role="Web Developer Intern"
-                        type="The Skill Guru"
-                        duration="4 Months (Completed)"
-                        link="https://theskillguru.org/"
-                        details={[
-                            "The Skill Guru is a dynamic platform providing comprehensive learning resources and skill development programs for students and professionals.",
-                            "Completed an intensive 4-month internship focusing on full-stack web development and responsive UI design.",
-                            "Gained practical experience in designing and deploying web applications using modern frameworks.",
-                            "Collaborated effectively with senior developers to implement high-performance and interactive UI components."
-                        ]}
-                    />
-                    <ExperienceCard
-                        role="Event Organizer"
-                        type="Blind Typing Competition"
-                        duration="Event"
-                        details={[
-                            "Organized a technical event and developed a custom website for participant registration and info.",
-                            "Managed event logistics and ensured smooth execution of the competition.",
-                            "Demonstrated leadership and organizational skills in a high-pressure environment."
-                        ]}
-                    />
-                    <ExperienceCard
-                        role="Key Achievements"
-                        type=""
-                        duration="Ongoing"
-                        details={[
-                            "Developed Universal Studio, a versatile digital suite for document management and media editing.",
-                            "Built a complete IoT Smart Attendance System integrating hardware and mobile software.",
-                            "Proficient in system administration tasks including DHCP, DNS, and Linux security.",
-                            "Developed robust networking setups involving Routing and LAN configurations."
-                        ]}
-                    />
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const ProjectCard = ({ title, desc, link, tags }) => (
-    <motion.div
-        whileHover={{ y: -10 }}
-        style={{
-            background: 'var(--bg-primary)',
-            borderRadius: '20px',
-            overflow: 'hidden',
-            border: '1px solid var(--border-color)',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
-        }}
-    >
-        <div style={{ padding: '30px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '15px' }}>
-                <h3 style={{ fontSize: '1.4rem' }}>{title}</h3>
-                {link && <a href={link} style={{ color: 'var(--accent-color)' }}><ExternalLink size={20} /></a>}
-            </div>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '25px', flex: 1, fontSize: '1rem', lineHeight: '1.6' }}>{desc}</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {tags.map(tag => (
-                    <span key={tag} style={{
-                        fontSize: '0.8rem',
-                        background: 'rgba(59, 130, 246, 0.1)',
-                        padding: '6px 14px',
-                        borderRadius: '20px',
-                        color: 'var(--accent-color)',
-                        border: '1px solid rgba(59, 130, 246, 0.2)'
-                    }}>
-                        {tag}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {cat.skills.map((skill, sIdx) => (
+                    <span 
+                      key={sIdx}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        color: 'var(--text-secondary)',
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        fontSize: '0.85rem',
+                        fontWeight: '600',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.borderColor = 'var(--accent-color)';
+                        e.target.style.color = 'white';
+                        e.target.style.background = 'rgba(249, 115, 22, 0.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                        e.target.style.color = 'var(--text-secondary)';
+                        e.target.style.background = 'rgba(255, 255, 255, 0.03)';
+                      }}
+                    >
+                      {skill}
                     </span>
-                ))}
-            </div>
-        </div>
-    </motion.div>
-);
-
-const Projects = () => {
-    const projects = [
-        {
-            title: "Universal Studio",
-            desc: "A comprehensive Digital Creative Suite featuring PDF management tools, advanced Photo and Video editors, and AI-powered media enhancement capabilities.",
-            tags: ["React", "AI Enhancement", "PDF Tools", "Media Editing"],
-            link: "https://universal-studio-nine.vercel.app/"
-        },
-        {
-            title: "Smart Attendance System",
-            desc: "An innovative IoT-based solution integrating mobile applications with hardware sensors to automate attendance tracking efficiently.",
-            tags: ["IoT", "Mobile App", "Sensors", "Database"],
-            link: "#"
-        },
-        {
-            title: "Blind Typing Event Website",
-            desc: "A custom-built website for managing registrations and information for a technical typing competition event.",
-            tags: ["Web Dev", "Event Mgmt", "UI/UX"],
-            link: "#"
-        },
-        {
-            title: "IoT Mini Projects",
-            desc: "A collection of various IoT experiments using Arduino and ESP32, demonstrating control over motors, sensors, and wireless communication.",
-            tags: ["Arduino", "ESP32", "Hardware"],
-            link: "#"
-        },
-        {
-            title: "Android & IoT Apps",
-            desc: "Development of mobile interfaces to interact with IoT devices, enabling remote monitoring and control capabilities.",
-            tags: ["Android", "Java/Kotlin", "IoT"],
-            link: "#"
-        }
-    ];
-
-    return (
-        <section id="projects" style={{ ...sectionStyle }}>
-            <div className="container">
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '50px', textAlign: 'center' }}>Featured <span className="gradient-text">Projects</span></h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
-                    {projects.map((p, i) => (
-                        <ProjectCard key={i} {...p} />
-                    ))}
+                  ))}
                 </div>
-            </div>
-        </section>
-    );
+              </TiltCard>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
-const Contact = () => {
-    return (
-        <section id="contact" style={{ ...sectionStyle, background: 'var(--bg-secondary)', textAlign: 'center' }}>
-            <div className="container">
-                <h2 style={{ fontSize: '2.5rem', marginBottom: '30px' }}>Let's <span className="gradient-text">Connect</span></h2>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '50px', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 50px auto' }}>
-                    I am currently open to new opportunities and collaborations. Feel free to reach out via email or LinkedIn.
-                </p>
+// Experience Timeline Section
+const Experience = () => {
+  const experiences = [
+    {
+      role: "Web Development Intern",
+      company: "Kryoss Softech Private Limited",
+      duration: "April 2025 – April 2026",
+      location: "Dombivli West, India",
+      details: [
+        "Developed responsive and user-friendly web applications using React.js, Express, and node environments.",
+        "Integrated secure RESTful APIs and database schemas (MongoDB, MySQL) to support high-performance user features.",
+        "Implemented clean, modular, and maintainable frontend architectures following MVC guidelines.",
+        "Performed debugging, browser testing, speed auditing, and SEO optimizations to scale application loads.",
+        "Worked in close team environments leveraging Git version controls and Agile scrum pipelines."
+      ]
+    }
+  ];
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
-                    <motion.a
-                        whileHover={{ scale: 1.05 }}
-                        href="mailto:sandeshpokharkar5248@gmail.com"
-                        style={{
-                            fontSize: '1.5rem',
-                            color: 'var(--text-primary)',
-                            textDecoration: 'underline',
-                            textDecorationColor: 'var(--accent-color)',
-                            textUnderlineOffset: '8px'
-                        }}>
-                        sandeshpokharkar5248@gmail.com
-                    </motion.a>
-                    <div style={{ display: 'flex', gap: '30px', marginTop: '30px' }}>
-                        <a href="https://www.linkedin.com/in/sandesh-pokharkar-15b4b029b" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.1rem' }}>
-                            <div style={{ background: '#0077b5', padding: '10px', borderRadius: '50%', display: 'flex' }}><Briefcase size={20} color="white" /></div>
-                            <span>LinkedIn</span>
-                        </a>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.1rem' }}>
-                            <div style={{ background: '#25D366', padding: '10px', borderRadius: '50%', display: 'flex' }}><MapPin size={20} color="white" /></div>
-                            <span>Dombivli West (91526 00509)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
-}
-
-const Home = () => {
-    return (
-        <div>
-            <Hero />
-            <Skills />
-            <About />
-            <Experience />
-            <Projects />
-            <Contact />
+  return (
+    <section id="experience" style={{ padding: '100px 0', background: 'var(--bg-secondary)', position: 'relative' }}>
+      <div className="container">
+        
+        {/* Title */}
+        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
+            Work <span className="gradient-text">Experience</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>
+            Professional developer internship history
+          </p>
         </div>
-    );
+
+        {/* Timeline Layout */}
+        <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
+          
+          {/* Vertical central line */}
+          <div style={{
+            position: 'absolute',
+            left: '20px',
+            top: '0',
+            bottom: '0',
+            width: '2px',
+            background: 'linear-gradient(to bottom, var(--accent-color) 0%, var(--accent-secondary) 100%)'
+          }} />
+
+          {experiences.map((exp, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              style={{
+                position: 'relative',
+                paddingLeft: '50px',
+                marginBottom: '40px'
+              }}
+            >
+              {/* Pin indicator */}
+              <div style={{
+                position: 'absolute',
+                left: '11px',
+                top: '6px',
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%',
+                background: 'var(--bg-secondary)',
+                border: '3px solid var(--accent-color)',
+                boxShadow: '0 0 10px var(--accent-color)',
+                zIndex: 3
+              }} />
+
+              {/* Experience Box */}
+              <TiltCard style={{ padding: '32px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'white' }}>{exp.role}</h3>
+                    <p style={{ color: 'var(--accent-color)', fontWeight: '700', fontSize: '0.95rem', marginTop: '4px' }}>
+                      {exp.company}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '600' }}>
+                      <Calendar size={14} color="var(--accent-secondary)" />
+                      {exp.duration}
+                    </span>
+                    <span style={{ marginTop: '4px' }}>{exp.location}</span>
+                  </div>
+                </div>
+
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '16px', color: 'var(--text-secondary)' }}>
+                  {exp.details.map((bullet, bIdx) => (
+                    <li key={bIdx} style={{ fontSize: '0.95rem', lineHeight: '1.7' }}>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+// Projects Section
+const Projects = () => {
+  const projects = [
+    {
+      title: "Kryoss Interior",
+      desc: "A responsive, high-end web platform showcasing premium interior design profiles, spatial layouts, and portfolio aesthetics.",
+      link: "https://kryoss-interior.vercel.app",
+      tags: []
+    },
+    {
+      title: "Universal Studio",
+      desc: "A fully integrated web workspace containing document manipulation utilities, photo/video layout editors, and conversion tools.",
+      link: "https://universalstudio-one.vercel.app",
+      tags: []
+    },
+    {
+      title: "VyomBiz",
+      desc: "A corporate digital portal built to organize business intelligence pipelines, user client relations, and operational tools.",
+      link: "https://vyombiz-three.vercel.app/",
+      tags: []
+    },
+    {
+      title: "C-Link HR",
+      desc: "A robust HR suite facilitating modern hiring pipelines, candidate interview tracking, payroll records, and employee accounts.",
+      link: "https://clink-hr-2.vercel.app",
+      tags: []
+    },
+    {
+      title: "Kryoss-Work",
+      desc: "A real-time workspace task manager showing project assignments, logs, ticket status boards, and team tracking components.",
+      link: "https://kryoss-work.vercel.app/",
+      tags: []
+    }
+  ];
+
+  return (
+    <section id="projects" style={{ padding: '100px 0' }}>
+      <div className="container">
+        
+        {/* Title */}
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
+            Featured <span className="gradient-text">Projects</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>
+            Click on the external link icons to visit the live vercel deployments
+          </p>
+        </div>
+
+        {/* Project Cards Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+          {projects.map((proj, idx) => (
+            <TiltCard key={idx} style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '32px' }}>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: 'white' }}>{proj.title}</h3>
+                  <motion.a 
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.9 }}
+                    href={proj.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid var(--border-color)',
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-color)'
+                    }}
+                  >
+                    <ExternalLink size={18} />
+                  </motion.a>
+                </div>
+
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.7' }}>
+                  {proj.desc}
+                </p>
+              </div>
+
+              {/* Tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '24px' }}>
+                {proj.tags.map((tag, tIdx) => (
+                  <span 
+                    key={tIdx}
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: '700',
+                      background: 'rgba(59, 130, 246, 0.1)',
+                      color: 'var(--accent-secondary)',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(59, 130, 246, 0.2)'
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+            </TiltCard>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+// Contact Section
+const Contact = () => {
+  const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formState.name && formState.email && formState.message) {
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormState({ name: '', email: '', subject: '', message: '' });
+      }, 4000);
+    }
+  };
+
+  return (
+    <section id="contact" style={{ padding: '100px 0', background: 'var(--bg-secondary)' }}>
+      <div className="container">
+        
+        {/* Title */}
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-accent)' }}>
+            Get In <span className="gradient-text">Touch</span>
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>
+            Reach out via form or use direct communication details
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'start' }}>
+          
+          {/* Left: Contact Info */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+            
+            <h3 style={{ fontSize: '1.6rem', fontWeight: '800', color: 'white' }}>Let's work together!</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.8' }}>
+              I am open to internships, projects, and junior full-stack developer roles. If you have any inquiries, proposals, or just want to connect, feel free to contact me.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              
+              {/* Phone */}
+              <a href="tel:+919152600509" style={{ display: 'flex', alignItems: 'center', gap: '16px' }} className="contact-item">
+                <div style={{
+                  background: 'rgba(249, 115, 22, 0.1)',
+                  color: 'var(--accent-color)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Phone size={20} />
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Phone / WhatsApp</p>
+                  <p style={{ fontSize: '1rem', color: 'white', fontWeight: '700' }}>+91 91526 00509</p>
+                </div>
+              </a>
+
+              {/* Email */}
+              <a href="mailto:sandeshpokharkar5248@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '16px' }} className="contact-item">
+                <div style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  color: 'var(--accent-secondary)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <Mail size={20} />
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Email Address</p>
+                  <p style={{ fontSize: '1rem', color: 'white', fontWeight: '700' }}>sandeshpokharkar5248@gmail.com</p>
+                </div>
+              </a>
+
+              {/* Location */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--text-secondary)'
+                }}>
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Address Coordinates</p>
+                  <p style={{ fontSize: '1rem', color: 'white', fontWeight: '700' }}>Dombivli West, Maharashtra, India</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Right: Contact Form */}
+          <TiltCard style={{ padding: '40px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Your Name</label>
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="John Doe" 
+                    value={formState.name}
+                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Your Email</label>
+                  <input 
+                    type="email" 
+                    required 
+                    placeholder="john@example.com" 
+                    value={formState.email}
+                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Subject</label>
+                <input 
+                  type="text" 
+                  placeholder="Freelance Project / Hiring" 
+                  value={formState.subject}
+                  onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'white' }}>Message</label>
+                <textarea 
+                  rows={4} 
+                  required 
+                  placeholder="Let's build something amazing together..." 
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                />
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                style={{
+                  background: 'linear-gradient(135deg, var(--accent-color) 0%, #ea580c 100%)',
+                  color: 'white',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  fontWeight: '700',
+                  marginTop: '8px',
+                  boxShadow: '0 8px 16px -8px rgba(249, 115, 22, 0.4)'
+                }}
+              >
+                Send Message
+              </motion.button>
+            </form>
+
+            {/* Success Overlay Popup */}
+            {submitted && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(3, 7, 18, 0.95)',
+                  backdropFilter: 'blur(8px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '16px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  borderRadius: 'inherit',
+                  zIndex: 10
+                }}
+              >
+                <motion.div
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', damping: 10 }}
+                  style={{
+                    background: 'rgba(249, 115, 22, 0.1)',
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--accent-color)'
+                  }}
+                >
+                  <CheckCircle2 size={32} />
+                </motion.div>
+                <div>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: '800', color: 'white' }}>Message Sent Successfully!</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
+                    Thank you for reaching out, Sandesh will get back to you shortly.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </TiltCard>
+
+        </div>
+
+        {/* Footer info */}
+        <div style={{ marginTop: '80px', borderTop: '1px solid var(--border-color)', paddingTop: '30px', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+
+          </p>
+        </div>
+
+      </div>
+      
+      {/* Visual touch-up styles for contact link transitions */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .contact-item:hover p:last-child {
+          color: var(--accent-color) !important;
+          transition: color 0.3s ease;
+        }
+      `}} />
+    </section>
+  );
+};
+
+// Home Main Orchestrator
+const Home = () => {
+  return (
+    <div style={{ overflowX: 'hidden' }}>
+      <Hero />
+      <About />
+      <Skills />
+      <Experience />
+      <Projects />
+      <Contact />
+    </div>
+  );
 };
 
 export default Home;
